@@ -1,47 +1,59 @@
-//selecting popup box,popup overlay button
-var popupoverlay = document.querySelector(".popup-overlay")
-var popupbox= document.querySelector(".popup-box")
-var addpopupbutton = document.getElementById("add-popup")
+// Selecting popup elements
+const popupOverlay = document.querySelector(".popup-overlay");
+const popupBox = document.querySelector(".popup-box");
+const addPopupButton = document.getElementById("add-popup");
+const cancelButton = document.getElementById("cancel-book");
 
- addpopupbutton.addEventListener("click",function(){
-    popupoverlay.style.display="block"
-    popupbox.style.display="block"
-})
+// Show popup when + is clicked
+addPopupButton.addEventListener("click", () => {
+  popupOverlay.style.display = "block";
+  popupBox.style.display = "block";
+});
 
-//select cancel button
-var cancelbutton =document.getElementById("cancel-book")
-cancelbutton.addEventListener("click",function(event){
-    event.preventDefault()
-     popupoverlay.style.display="none"
-    popupbox.style.display="none"  
-})
+// Hide popup on cancel
+cancelButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  popupOverlay.style.display = "none";
+  popupBox.style.display = "none";
+});
 
-//select container,add book,book title,book aurthor,book description
+// Select form inputs
+const container = document.querySelector(".container");
+const addBook = document.getElementById("add-book");
+const bookTitle = document.getElementById("book-title");
+const bookAuthor = document.getElementById("book-aurthor");
+const bookDescription = document.getElementById("book-description");
 
-var container=document.querySelector(".container")
-var addbook=document.getElementById("add-book")
-var booktitle=document.getElementById("book-title")
-var bookaurthor=document.getElementById("book-aurthor")
-var bookdescription=document.getElementById("book-description")
+// Handle add book
+addBook.addEventListener("click", (event) => {
+  event.preventDefault();
 
-addbook.addEventListener("click",function(event){
-    event.preventDefault()
-    var div=document.createElement("div")
-    div.setAttribute("class","book-container")
-    div.innerHTML=`<h2>${booktitle.value}</h2>
-        <h5>${bookaurthor.value}</h5>
-        <p>${bookdescription.value}</p>
-         <button onclick="deletebook(event)">Delete</button>`
-    container.append(div)
-    popupoverlay.style.display="none"
-    popupbox.style.display="none" 
+  if (bookTitle.value.trim() === "" || bookAuthor.value.trim() === "") {
+    alert("Please fill in all fields.");
+    return;
+  }
 
-})
+  const bookDiv = document.createElement("div");
+  bookDiv.classList.add("book-container");
 
-function deletebook(event)
-{
-    event.target.parentElement.remove()
+  bookDiv.innerHTML = `
+    <h2>${bookTitle.value}</h2>
+    <h5>${bookAuthor.value}</h5>
+    <p>${bookDescription.value}</p>
+    <button onclick="deleteBook(event)">Delete</button>
+  `;
+
+  container.appendChild(bookDiv);
+
+  // Close popup and clear inputs
+  popupOverlay.style.display = "none";
+  popupBox.style.display = "none";
+  bookTitle.value = "";
+  bookAuthor.value = "";
+  bookDescription.value = "";
+});
+
+// Delete book function
+function deleteBook(event) {
+  event.target.parentElement.remove();
 }
-
-
-
